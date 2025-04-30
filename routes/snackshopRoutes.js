@@ -13,4 +13,9 @@ router.post('/snacks/add', snackshopController.addSnack);
 router.get('/customers', snackshopController.getCustomers);
 router.post('/customers/add', snackshopController.addCustomer);
 router.get('/customers/:customerId', snackshopController.getCustomerByID);
+router.get('/orders', snackshopController.getAllOrders);
+router.get('/sales', snackshopController.getAllSales);
+router.get('/customers/:customerId/orders/:orderId', snackshopController.getOrderForCustomer);
+router.get('/orders/:orderId', snackshopController.getOrderItems);
+
 module.exports = router;

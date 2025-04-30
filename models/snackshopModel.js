@@ -72,6 +72,55 @@ getCustomerByID: (id, cb) => {
     if (err) return cb(err);
     cb(null, rows); // Full info for each customer
   });
+},
+getAllOrders: (cb) => {
+  const sql = `SELECT order_id, customer_id, order_date, total_amount FROM Orders`;
+  db.all(sql, [], (err, rows) => {
+    if (err) return cb(err);
+    cb(null, rows); // Full info for each order
+  });
+},
+getAllSales:(cb) => {
+  const sql = `SELECT sale_id, order_id, sale_date, total_amount, payment_method FROM Sales`;
+  db.all(sql, [], (err, rows) => {
+    if (err) return cb(err);
+    cb(null, rows); // Full info for each sale
+  });
+},
+
+getOrderForCustomer:(customerId, orderId, cb) => {
+  const sql = `SELECT * FROM Orders WHERE customer_id = ? AND order_id = ?`;
+
+  db.get(sql, [customerId, orderId], (err, order) => {
+    if (err) {
+      return cb(err);
+    }
+    if (!order) {
+      return cb(null, null);  // If no order found, return null
+    }
+
+    // Now retrieve the items for this order
+    const sqlItems = `SELECT * FROM Order_Items WHERE order_id = ?`;
+    db.all(sqlItems, [orderId], (err, items) => {
+      if (err) {
+        return cb(err);
+      }
+
+      // Add the order items to the order object
+      order.items = items;
+
+      // Return both the order details and its associated items
+      cb(null, order);
+    });
+  });
+},
+getOrderItems: (orderId, cb) => {
+  const sql = `SELECT * FROM Order_Items WHERE order_id=?`;
+  db.all(sql, [orderId], (err, rows) => {
+    if (err) return cb(err);
+    cb(null, rows); // Return order items for the specific order
+  });
 }
+
 }
 

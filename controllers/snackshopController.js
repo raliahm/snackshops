@@ -81,4 +81,55 @@ exports.getCustomerByID = (req, res) => {
         res.json(customer);  // Return the customer data as JSON
     });
 };
-;
+
+exports.getAllOrders = (req, res) => {
+    snackModel.getAllOrders((err, orders) => {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to retrieve orders' });
+      }
+      res.json(orders);
+    });
+  };
+
+exports.getAllSales = (req, res) => {
+snackModel.getAllSales((err, sales) => {
+    if (err) {
+    return res.status(500).json({ error: 'Failed to retrieve sales' });
+    }
+    res.json(sales);
+});
+};
+
+exports.getOrderForCustomer = (req, res) => {
+    const customerId = req.params.customerId;  // Get customerId from URL parameter
+    console.log(`Looking for customer with ID: ${customerId}`);  // Log the customer ID
+    const orderId = req.params.orderId;
+    console.log(`Looking for order with ID: ${orderId}`);  // Log the customer ID
+
+    // Call the function to get the customer data by ID
+    snackModel.getOrderForCustomer(customerId, orderId, (err, order) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to retrieve order data' });
+        }
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        res.json(order);  // Return the customer data as JSON
+    });
+};
+
+exports.getOrderItems = (req, res) => {
+    const orderId = req.params.orderId;  // Get customerId from URL parameter
+    console.log(`Looking for customer with ID: ${orderId}`);  // Log the customer ID
+
+    // Call the function to get the customer data by ID
+    snackModel.getOrderItems(orderId, (err, order) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to retrieve order items data' });
+        }
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        res.json(order);  // Return the customer data as JSON
+    });
+};
