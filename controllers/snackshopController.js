@@ -65,3 +65,20 @@ exports.getCustomers = (req, res) => {
         res.status(201).json({ message: 'Customer added successfully', id: result.insertId });
     });
 };
+
+exports.getCustomerByID = (req, res) => {
+    const customerId = req.params.customerId;  // Get customerId from URL parameter
+    console.log(`Looking for customer with ID: ${customerId}`);  // Log the customer ID
+
+    // Call the function to get the customer data by ID
+    snackModel.getCustomerByID(customerId, (err, customer) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to retrieve customer data' });
+        }
+        if (!customer) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+        res.json(customer);  // Return the customer data as JSON
+    });
+};
+;

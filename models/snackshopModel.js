@@ -65,6 +65,13 @@ addSnack: (category, name, price,stock_qty, cb) => {
     if (err) return cb(err);
     cb(null, rows); // Full info for each customer
   });
+},
+getCustomerByID: (id, cb) => {
+  const sql = `SELECT * FROM Customers WHERE customer_id=?`;
+  db.all(sql, [id], (err, rows) => {
+    if (err) return cb(err);
+    cb(null, rows); // Full info for each customer
+  });
 }
 }
 

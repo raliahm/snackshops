@@ -12,4 +12,5 @@ router.get('/snacks', snackshopController.getAllSnacks);
 router.post('/snacks/add', snackshopController.addSnack);
 router.get('/customers', snackshopController.getCustomers);
 router.post('/customers/add', snackshopController.addCustomer);
+router.get('/customers/:customerId', snackshopController.getCustomerByID);
 module.exports = router;
